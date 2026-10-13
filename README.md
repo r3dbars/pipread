@@ -2,110 +2,99 @@
 
 ### Give your blog a play button.
 
-A small web component that reads articles with a local English voice. No speech API key. No per-character inference bill. Your article stays in the browser.
+Generate article narration locally, then publish ordinary audio files beside your posts. Readers get a small player immediately, with no model download or speech API key. The default player is framework independent and contains no speech inference runtime.
 
-**Source-only preview.** You can try and integrate it locally today. Public distribution of the compiled speech runtime is still blocked by unresolved eSpeak source provenance. This repository does not include that runtime or model weights. Read the [release boundary](docs/RELEASE.md) before hosting a build for others.
+**Developer preview.** There is no published npm package; do not use `npx pipread`. Clone this source repository. Browser-local synthesis remains an optional local experiment whose compiled runtime distribution is still on hold.
 
-## Listen locally
+## Generate your posts
 
-Requires Node 22.12+ and installed Google Chrome for the tested path.
+Requires Node 22.12+ and a supported native ONNX Runtime platform. Actual generation is tested on macOS Apple Silicon with Node 24.21.0; other operating systems and CI runners need validation. No Chrome is needed to generate narration.
 
 ```sh
 git clone https://github.com/r3dbars/pipread.git
 cd pipread
 npm ci --ignore-scripts
-npm run dev
 ```
 
-Open the localhost URL printed by Vite (normally `http://127.0.0.1:5173`). Press **Listen to this article**. The model downloads only on first use, with progress and best-effort caching.
+Create `pipread.json` **in your blog project**. Paths are relative to that file; input and output directories must be separate. Output must initially be absent or empty.
 
-There is no published npm package. **Do not use `npx pipread`.** Clone this repository and run its included CLI with Node. Repository: [r3dbars/pipread](https://github.com/r3dbars/pipread).
-
-## A tiny CLI, with preview first
-
-Create a standalone source project:
+```json
+{
+  "inputDir": "rendered-posts",
+  "outputDir": "public/pipread",
+  "selector": "article",
+  "extensions": [".html"],
+  "voice": "af_heart",
+  "dtype": "fp32",
+  "speed": 1,
+  "paragraphPause": 0.3
+}
+```
 
 ```sh
-node bin/pipread.mjs init --dir ../my-reader
-# Review the dry-run, then explicitly write:
-node bin/pipread.mjs init --dir ../my-reader --write
-cd ../my-reader
-npm ci --ignore-scripts
-npm run dev
+# Inspect the plan first. No model download or file writes.
+node /path/to/pipread/bin/pipread.mjs generate --config ./pipread.json
+# Generate new/changed articles and publish a manifest:
+node /path/to/pipread/bin/pipread.mjs generate --config ./pipread.json --write
 ```
 
-Add the component to an existing **static HTML** file:
+Run exactly the same command after editing or adding posts. Unchanged narration is reused without loading the model. Deleted inputs disappear from the active manifest; their audio remains on disk so older deployed pages do not break. Nothing deletes old recordings automatically. Missing generated files are repaired; modified outputs are refused rather than silently replaced.
 
-```sh
-node bin/pipread.mjs add --html ../my-blog/post.html --selector '#story'
-node bin/pipread.mjs add --html ../my-blog/post.html --selector '#story' --write
-```
+HTML extraction requires exactly one selector match. It excludes navigation, code, controls, hidden/ARIA-hidden/data-no-read elements and inline hidden styles. It does not execute scripts, fetch stylesheets, or calculate CSS class visibility. Use rendered static HTML and explicit `data-no-read` attributes; inspect the generated timing JSON transcript before publishing. `.txt` inputs are also supported, with blank lines separating paragraphs. Framework/Markdown source should be rendered to HTML first.
 
-The CLI defaults to dry-run. Writes create a backup, preserve other HTML, refuse conflicting players and symlink paths, and do nothing when repeated with the same configuration. It inserts the player before `</body>`; move the managed block below your byline for the demo layout. Selector validity is checked at runtime. Framework templates need the manual example below.
+## Put the player beside an article
 
-`add` does not copy runtime assets. Its default script URL is `/voice/dist/article-voice.js`; change it with `--script-url /your/local/path/article-voice.js`. Build the source project with `npm run build`, then arrange the generated `dist/` at that URL on your **local preview server**. Keep all worker/runtime assets and notices together. Public hosting remains on hold.
-
-## Or use two elements
+Publish the entire generated `public/pipread` directory at `/pipread/` on your static host. The manifest maps each path relative to `inputDir` to its audio and timings. For `rendered-posts/post.html`:
 
 ```html
-<article id="story">
-  <h1>Your title</h1>
-  <p>Your story, with <em>emphasis</em> and links intact.</p>
-  <p data-no-read>Skip this author note.</p>
-</article>
-<script type="module" src="/voice/dist/article-voice.js"></script>
-<article-voice article="#story" backend="auto"></article-voice>
+<script type="module" src="/pipread/pipread-player.js"></script>
+<pipread-audio manifest="/pipread/manifest.json"
+  article="post.html" selector="#story"></pipread-audio>
+<article id="story"><p>Your article…</p></article>
 ```
 
-No framework or app server is required after a local build. Use HTTPS or localhost, not `file://`. The [sample HTML](examples/article.html) and [agent setup guide](docs/SETUP.md) explain the source/build layout. MCP would add a server and permissions for a two-element integration, so this project uses a CLI and plain instructions instead.
-
-## What readers get
-
-- Play, pause, resume, ±15 seconds, mute and pitch-preserving speed.
-- A timeline for **prepared audio**, with a `+` until full duration is known. Seeking never skips ungenerated text.
-- Optional highlighting, off by default. Passage mode follows the actual chunk. **Words (approximate)** is an experimental audio-activity/syllable estimate, not precise alignment. Numbers and abbreviations fall back to passage highlighting. No forced scrolling.
-- Explicit article selection; navigation, code and hidden content excluded.
-- One English voice: Kokoro `af_heart`. No cloning.
-
-## Local speech still has costs
-
-First use downloads approximately **93 MB of CPU weights** or **326 MB of GPU weights**, plus a 0.52 MB voice and about 22 MB of raw runtime assets (smaller over compressed HTTP). The browser caches assets when storage permits. Switching backends can download both models. Hosts still pay bandwidth; readers use memory, CPU/GPU and battery.
-
-Text/audio stay on-device. Model requests go to Hugging Face and its download infrastructure; those hosts see IP/request metadata. Runtime files come from your site. There is no telemetry SDK or cloud inference. Worker fetches are restricted to same-origin assets and the model path. The upstream model revision currently resolves `main`; it is not content-pinned.
-
-## Engine and architecture
-
-Kokoro-js 1.2.1 + Transformers.js 3.8.1 run in a lazy dedicated worker. Auto prefers WebGPU with vendor-recommended fp32; no adapter selects q8 WASM. GPU initialization errors require an explicit CPU retry, avoiding a silent second large download. Model assets use IndexedDB; small voice embeddings use Cache API. One chunk is prepared ahead. Backward seeking retains a rolling 32 MiB WAV history.
-
-The smaller KittenTTS browser alternative was evaluated, but was not selected because this prototype had stronger end-to-end evidence for Kokoro's GPU and CPU paths. This is a compatibility choice, not a controlled voice-quality ranking.
-
-`src/text.js` maps normalized text back to original DOM nodes. `src/highlight.js` uses CSS Custom Highlight ranges without wrapping text. `src/article-voice.js` coordinates native audio and cancellation. Attribute changes and Stop cancel the session; text is snapshotted on Listen. Model download completion does not guarantee playback permission—Resume handles autoplay restrictions.
-
-## Tested—and not tested
-
-Desktop Chrome 155 on Apple M5 Max: real GPU and WASM generation, caching and playback. Observed first audio in one cold/warm run: GPU **35.57 / 1.90 seconds**, CPU **16.08 / 6.59 seconds**. These are individual measurements, not service-level promises. Cold transfers dominated setup; warm runs made zero external model requests. Controls, text mapping and errors have automated tests; mocked synthesis isolates lifecycle cases.
+Or add that integration with a backup and dry-run first:
 
 ```sh
-npm run test:cli
-npm test
-npm run build
-# With npm run preview in another terminal:
-npm run benchmark
+node /path/to/pipread/bin/pipread.mjs add --html ./post.html \
+  --selector '#story' --manifest /pipread/manifest.json --article post.html
+# Repeat with --write after reviewing the preview.
 ```
 
-Safari, Firefox, Edge, actual mobile, offline and background playback are **unverified**. A narrow viewport test is not a mobile test. Browsers lacking modern modules, workers, WebAssembly/SIMD or Intl.Segmenter are unsupported. Highlighting additionally needs CSS Custom Highlight support. Subjective voice quality, word-boundary accuracy and long-session memory have not been independently validated. See [highlighting limits](docs/HIGHLIGHTING.md).
+The CLI preserves unrelated HTML, creates a `.article-voice-backup`, refuses symlinks/conflicting players, and is idempotent. It does not deploy or copy assets into your hosting account. Nested posts use keys such as `notes/post.html`. Use `--script-url` when assets live elsewhere.
 
-## Troubleshooting
+The player uses native audio controls for play/pause/seek, ±15-second skip buttons, pitch-preserving speed, and optional passage highlighting. Highlighting matches the visible paragraph text to the generated transcript; changed or unmatched markup simply gets no highlight. Timings are exact concatenated synthesis-chunk boundaries, **not word alignment**. No forced scrolling. Serve over HTTP/HTTPS with `audio/wav` and working byte-range requests for seeking. Host cache policy should refresh `manifest.json` and `pipread-player.js`; content-hashed WAV/timing files may be cached immutably.
 
-| Symptom | Check |
-|---|---|
-| Page will not open | Start `npm run dev` and use its printed URL; the terminal must remain running. |
-| Long first load | Allow the model download; inspect per-file progress. CPU is the smaller download. |
-| GPU error | Press the explicit CPU retry button; this may download another model. |
-| No readable text | Check the selector, hidden ancestors and `data-no-read`. |
-| No sound | Resume after browser autoplay denial; check mute and system volume. |
-| Missing worker or WASM | Keep all build assets together; serve JS/WASM with correct MIME types over localhost/HTTPS. |
-| Downloads repeat | Private browsing, quota limits or eviction may prevent caching. |
-| Word highlight feels off | Use Passage mode; word timing is approximate, not forced alignment. |
+## Model, cost and privacy
 
-Original code is MIT. Dependencies retain their own licenses, including the embedded eSpeak GPL component. See [third-party notices](THIRD_PARTY_NOTICES.md) and [licensing review](docs/LICENSING.md). A free API bill does not mean a license-free runtime.
+One supplied English voice, Kokoro Heart (`af_heart`); no voice cloning. The local generator uses Kokoro-js 1.2.1, Transformers.js 3.8.1 and native ONNX CPU inference. Model revision and weights/voice hashes are pinned and verified. Default fp32 weights are **325,532,232 bytes**; optional `"dtype":"q8"` weights are **92,361,116 bytes**. Supporting tokenizer/config files and the installed voice/runtime add overhead. q8 output quality may differ; this new batch path's real inference validation used fp32.
+
+The first generation downloads model files from Hugging Face and its download infrastructure. Those hosts receive IP/request metadata, not article text. The model cache defaults to `.pipread-cache/` beside the config; generation happens locally. There is no speech API key or paid inference endpoint. Generation still uses compute, memory, storage and power; hosting uses bandwidth and storage. Native ONNX Runtime emitted a telemetry device-ID warning in testing; we do not claim that the native library is telemetry-free. No project analytics or article-upload code is included. The published standalone player has no inference or analytics dependency.
+
+## Incremental publishing / GitHub workflow
+
+Build your blog's HTML, run `generate --write`, then publish your normal site plus the generated audio directory. Keep the previous output/manifest and model cache between runs to make generation incremental. If CI starts empty every time, it regenerates every post. Publish a consistent manifest/audio set atomically; don't point readers at a new manifest before its files exist.
+
+For GitHub Actions, install the pinned source checkout and dependencies on a runner with Node and supported ONNX Runtime; cache `.pipread-cache` and persist the generated output directory as a build artifact or controlled repository content. Use your existing deployment step and permissions. An [illustrative step sequence](examples/github-steps.yml) shows where generation fits. It is not installed as a workflow. No external CI permissions or secrets are configured by this project. Pin the Pipread commit you review in your workflow; review the transcript/audio diff before publishing. A local cache is an optimization, not the sole backup of published audio.
+
+Every article's manifest record includes content/config hashes, exact model and voice identity, and WAV/timing integrity hashes. New audio uses immutable filenames. Manifest updates are atomic, with hash-named backups; an output lock prevents concurrent runs. If a process is killed, inspect its PID before manually removing `.pipread.lock`. Partial immutable files may remain for inspection. Existing user content and old published audio are never pruned.
+
+## Run the demo and checks
+
+```sh
+npm run demo:audio  # locally prepares the included story; first run downloads model
+npm run dev        # open Vite's localhost URL; readers only load prepared audio
+npm run test:cli
+npm test
+npm run build      # static demo/player only; no speech runtime
+```
+
+`npm run build` includes locally generated demo assets if present. The generated audio is not committed to this source repository. Safari, Firefox, mobile devices, background playback and offline use remain unverified. Narrow viewport checks are layout tests, not mobile playback certification.
+
+See the [verification report](docs/STATIC_VERIFICATION.md) for actual results and remaining limits.
+
+## Optional browser-local synthesis
+
+Open `/examples/browser-local.html` on the local dev server. This optional component downloads a model on first use and synthesizes passages in a worker. `npm run build:browser-local` creates a separate `dist-browser-local` for **local evaluation only**. Do not host that runtime publicly yet. The [licensing review](docs/LICENSING.md), [release boundary](docs/RELEASE.md) and [source-built phonemizer experiment](experimental/phonemizer/README.md) explain the remaining work.
+
+The default static publishing path ships generated narration and original player JS, without redistributing the synthesizer or model. This narrows the runtime-distribution issue; it is not a blanket legal clearance for every recording, article, voice or dependency. Original code is MIT except explicitly GPL-marked experimental adapter files; third-party components retain their licenses. See [notices](THIRD_PARTY_NOTICES.md).

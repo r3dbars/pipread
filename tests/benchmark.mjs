@@ -5,7 +5,7 @@ import fs from 'node:fs';
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const context = await browser.newContext({ viewport: { width: 1440, height: 1080 } });
 const page = await context.newPage();
-const base = process.env.BENCH_URL || 'http://127.0.0.1:4173';
+const base = process.env.BENCH_URL || 'http://127.0.0.1:5173/examples/browser-local.html';
 const results = { date: new Date().toISOString(), url: base, runs: [], notes: 'Isolated browser context. Cold = empty Cache API and HTTP cache. Warm = reload in same context. No mocked engine.' };
 let run;
 page.on('pageerror', e => run?.errors.push(e.message));

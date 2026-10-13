@@ -34,3 +34,7 @@ This prevents a claim of distribution readiness; it does not prevent reviewing a
 ## Source-only repository scope
 
 The source release excludes the generated runtime, dependency tarballs, model weights and compiled application bundles. Dependency references and installation instructions support local evaluation; they are not a claim that upstream distribution is compliant. See [RELEASE.md](RELEASE.md) for the explicit publication boundary. The compiled-runtime blocker remains open.
+
+## Source-built replacement experiment
+
+An opt-in [pinned-source replacement](../experimental/phonemizer/README.md) now builds eSpeak NG 1.52.0 with a new GPL-marked adapter. Two English-only builds matched byte-for-byte on the tested Mac and a real Node Kokoro inference test passed. It is not the default dependency; browser validation and full source/notice delivery remain unfinished. This does not clear public synthesis-runtime hosting. The default static generator keeps inference dependencies on the developer’s machine and publishes only narration, timing/manifest data, and original player source.

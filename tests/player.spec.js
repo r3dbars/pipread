@@ -21,13 +21,13 @@ async function mock(page, { error = false, slow = false, gpu = false } = {}) {
       terminate() { this.dead = true; window.workerCalls.push({ type: 'terminated' }); }
     };
   }, { error, slow, gpu });
-  await page.goto('/');
+  await page.goto('/examples/browser-local.html');
 }
 const player = page => page.locator('article-voice');
 const state = page => page.evaluate(() => document.querySelector('article-voice').state);
 
 test('extraction excludes navigation, code, hidden descendants and player; chunks bounded', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/examples/browser-local.html');
   const result = await page.evaluate(async () => {
     const { extractArticle, chunkText } = await import('/src/text.js');
     const root = document.createElement('article'); root.id = 'fixture';
@@ -111,7 +111,7 @@ test('invalid, absent, empty and hidden article targets are actionable errors', 
 });
 
 test('desktop and narrow layout render without horizontal overflow or page errors', async ({ page }) => {
-  const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/examples/browser-local.html');
   await expect(page).toHaveTitle('Pipread — Give your blog a play button');
   await expect(page.getByRole('heading',{level:1})).toBeVisible();
   for (const width of [1440,390]) {await page.setViewportSize({width,height:900});expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);await expect(player(page).getByRole('button',{name:'Listen to this article'})).toBeVisible();await page.screenshot({path:`/tmp/article-voice-${width}.png`,fullPage:true});}
@@ -148,7 +148,7 @@ test('end of article releases resources and offers replay', async ({ page }) => 
 });
 
 test('IndexedDB cache stores exact bytes and reports storage failures without failing playback', async ({page})=>{
-  await page.goto('/');
+  await page.goto('/examples/browser-local.html');
   const result=await page.evaluate(async()=>{
     const {createModelCache}=await import('/src/model-cache.js');
     const events=[];const cache=createModelCache(x=>events.push(x));
@@ -164,7 +164,7 @@ test('IndexedDB cache stores exact bytes and reports storage failures without fa
 });
 
 test('native speed preserves measured pitch and changes duration', async ({page})=>{
-  await page.goto('/');await page.locator('h1').click();
+  await page.goto('/examples/browser-local.html');await page.locator('h1').click();
   const measurements=await page.evaluate(async()=>{
     const {pcmWav}=await import('/src/audio.js');
     const sampleRate=24000,pcm=Float32Array.from({length:sampleRate*12},(_,i)=>.2*Math.sin(2*Math.PI*440*i/sampleRate));
@@ -322,7 +322,7 @@ test('optional highlight follows media seeks, pause, skips, speed, mute, disable
 
 test('numeric and abbreviation passages fall back; actual generated PCM produces bounded audio-driven estimates',async({page})=>{
   test.skip(!existsSync('docs/samples/heart-wasm.wav'), 'Optional local generated PCM fixture; see docs/SETUP.md');
-  await page.goto('/');
+  await page.goto('/examples/browser-local.html');
   const result=await page.evaluate(async()=>{
     const {speechActivity,approximateWords}=await import('/src/highlight.js');
     const context=new AudioContext();const buffer=await context.decodeAudioData(await (await fetch('/docs/samples/heart-wasm.wav')).arrayBuffer());

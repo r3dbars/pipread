@@ -11,5 +11,5 @@ export default defineConfig({
     },
   }],
   worker: { format: 'es' },
-  build: { rollupOptions: { input: { demo: 'index.html', 'article-voice': 'src/article-voice.js' }, output: { entryFileNames: '[name].js' } } },
+  build: { rollupOptions: { input: { demo: 'index.html', 'pipread-audio': 'src/pipread-audio.js' }, output: { entryFileNames: '[name].js' } } },
 });

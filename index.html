@@ -11,12 +11,12 @@
 </style></head>
 <body id="top">
 <header class="nav"><a class="brand" href="#top"><svg viewBox="0 0 180 140" width="64" height="50" aria-hidden="true"><path d="M38 88c-18-36 2-68 41-68 31 0 48 22 48 48l20 10-22 12c-6 25-23 35-53 32L38 136l9-29Z" fill="#ffb27d"/><path d="m67 56 34 21-34 21Z" fill="#fffaf3"/><circle cx="110" cy="51" r="4" fill="#25231f"/></svg><span>Pipread</span></a><nav aria-label="Main"><a href="#story">Demo</a><a href="#integration">Setup</a><a href="./docs/RELEASE.md">Release notes</a></nav></header>
-<section class="hero" aria-labelledby="hero-title"><p class="eyebrow">A little bird. A local voice.</p><h2 id="hero-title">Give your blog a play button.</h2><p>Local speech. No API key.</p><a class="cta" href="#story" id="try-listening">Try listening <span aria-hidden="true">↗</span></a><p class="hero-note">First listen downloads the voice model. Local preview only.</p></section><main><div class="journal">
+<section class="hero" aria-labelledby="hero-title"><p class="eyebrow">A little bird. A prepared voice.</p><h2 id="hero-title">Give your blog a play button.</h2><p>Ready-to-play audio. No speech API key.</p><a class="cta" href="#story" id="try-listening">Try listening <span aria-hidden="true">↗</span></a><p class="hero-note">Prepare the voice once. Let readers listen right away.</p></section><main><div class="journal">
 <div class="eyebrow">Pipread Journal / On reading</div>
 <article id="story"><h1>Good stories deserve a voice.</h1>
 <p class="dek">The same ideas you love to read, now a little easier to listen to.</p>
 <div class="byline" data-no-read><span class="avatar">p</span><span>Words by the Pipread studio<br><span style="color:#7b8577">October 13, 2026 · A short read</span></span></div>
-<article-voice article="#story" backend="auto"></article-voice>
+<pipread-audio manifest="/pipread/manifest.json" article="welcome.html" selector="#story"></pipread-audio>
 <div class="article-body"><p>Some of our best ideas arrive when we stop looking for them. They turn up on a walk around the block, while the kettle warms, or in the quiet few minutes before the rest of the house wakes up.</p>
 <p>These small pauses are easy to overlook. There is always another message to answer, another tab to open, another useful thing to do. But attention needs a little room to wander.</p>
 <h2>The long way home</h2>
@@ -28,12 +28,6 @@
 <p>There is no method to perfect here. Only a little space to make, and a world that keeps offering us things to pay attention to.</p>
 <pre hidden>This code must never be spoken.</pre><p hidden>This hidden text must never be spoken.</p>
 </div></article></div>
-<aside class="sidebar"><div class="mascot" aria-hidden="true"><svg viewBox="0 0 180 140" width="180" height="140"><path d="M38 88c-18-36 2-68 41-68 31 0 48 22 48 48l20 10-22 12c-6 25-23 35-53 32L38 136l9-29Z" fill="#edb68d"/><path d="m67 56 34 21-34 21Z" fill="#253b34"/><circle cx="110" cy="51" r="4" fill="#253b34"/></svg></div><h2>A little bird. A local voice.</h2><p>A small, private player for the open web. No account. No API key. No metered speech API. Your words stay in this browser.</p><hr><p><strong>Local preview only.</strong> Public runtime distribution is pending the <a href="./docs/RELEASE.md">dependency provenance review</a>.</p><hr><h2>Try the engine</h2><label for="backend">Processing device</label><br><select id="backend"><option value="auto">Automatic · prefer GPU</option><option value="wasm">CPU · WASM (~93 MB)</option><option value="webgpu">GPU · WebGPU (~326 MB)</option></select><p>Model files come from Hugging Face. Runtime files are served with this site. Downloads reveal your IP to those hosts. No article text is sent.</p><p>Speed uses browser-native pitch preservation. Mobile, offline, and background playback are not verified.</p><hr><h2 id="integration">Two lines to listen</h2><code>&lt;script type="module"<br> src="/voice/article-voice.js"&gt;<br>&lt;/script&gt;<br>&lt;article-voice article="#story"&gt;<br>&lt;/article-voice&gt;</code><hr><h2>Session measurements</h2><p id="metrics">Press Listen to measure model setup and first audio on this device.</p></aside>
-</main><footer>Pipread / source preview · Local speech, a little more human. · <a href="./THIRD_PARTY_NOTICES.md">Software licenses</a></footer>
-<script type="module" src="/src/article-voice.js"></script>
-<script type="module">
-const player = document.querySelector('article-voice');
-document.querySelector('#try-listening').onclick = () => player.start();
-document.querySelector('#backend').onchange = e => player.setAttribute('backend', e.target.value);
-player.addEventListener('voice-metrics', e => { document.querySelector('#metrics').textContent = `${e.detail.backend} · setup ${(e.detail.loadMs/1000).toFixed(2)}s · first audio ${(e.detail.firstAudioMs/1000).toFixed(2)}s · first synthesis ${(e.detail.firstGenerationMs/1000).toFixed(2)}s`; });
-</script></body></html>
+<aside class="sidebar"><h2>Generate, then publish.</h2><p>Pipread narrates your articles locally before readers arrive. Publish ordinary audio files beside your writing.</p><hr><h2 id="integration">Try this demo</h2><code>npm run demo:audio<br>npm run dev</code><p>The first generation downloads a 326 MB model. Readers only download the finished audio. Repeat runs reuse unchanged posts.</p><hr><h2>Made for your workflow</h2><p>No API key or paid speech service. Local generation still uses compute, storage and bandwidth.</p><p><a href="./examples/browser-local.html">Optional browser-local experiment</a> — public speech-runtime hosting remains held.</p><p><a href="https://github.com/r3dbars/pipread">Source and setup on GitHub ↗</a></p></aside>
+</main><footer>Pipread / static audio preview · Good words, at your pace. · <a href="./THIRD_PARTY_NOTICES.md">Software licenses</a></footer>
+<script type="module" src="/src/pipread-audio.js"></script><script type="module">document.querySelector('#try-listening').onclick=()=>document.querySelector('pipread-audio').toggle();</script></body></html>

@@ -10,11 +10,14 @@
     "preview": "vite preview --host 127.0.0.1",
     "test": "playwright test",
     "benchmark": "node tests/benchmark.mjs",
-    "test:cli": "node --test tests/cli.test.mjs"
+    "test:cli": "node --test tests/cli.test.mjs tests/batch.test.mjs",
+    "demo:audio": "node bin/pipread.mjs generate --config pipread.demo.json --write",
+    "build:browser-local": "vite build --config vite.browser-local.config.js"
   },
   "dependencies": {
     "@huggingface/transformers": "3.8.1",
-    "kokoro-js": "1.2.1"
+    "kokoro-js": "1.2.1",
+    "linkedom": "0.18.13"
   },
   "devDependencies": {
     "@playwright/test": "1.64.0",
@@ -32,5 +35,5 @@
   "engines": {
     "node": ">=22.12"
   },
-  "description": "A tiny local-first article audio player. Source-only preview."
+  "description": "Generate blog narration locally and publish a tiny static audio player."
 }

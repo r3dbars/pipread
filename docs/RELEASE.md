@@ -1,4 +1,10 @@
-# Source-only release boundary
+# Static audio publishing and optional runtime boundary
+
+The default CLI generates narration on the developer’s machine and emits an original standalone player plus WAV/timing/manifest files. Those generated outputs can be published with the blog without shipping the model or synthesis runtime. Review rights to the article and output before publishing. No blanket legal clearance is asserted.
+
+The following hold applies specifically to the optional browser-local synthesis runtime. It does not prohibit hosting the standalone static player and generated narration.
+
+## Optional synthesis runtime
 
 This repository distributes original JavaScript/HTML source, dependency version references and license notices. It does **not** distribute model weights, generated/minified speech bundles, dependency packages, phonemizer/eSpeak binaries, or prebuilt release archives. Install dependencies from their upstream registry for local evaluation. The CLI only scaffolds source and edits explicitly named HTML files; it never downloads/builds/deploys a runtime itself.
 

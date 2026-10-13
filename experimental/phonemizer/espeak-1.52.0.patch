@@ -1,0 +1,17 @@
+diff --git a/cmake/deps.cmake b/cmake/deps.cmake
+index b63ced2..7d55fb4 100644
+--- a/cmake/deps.cmake
++++ b/cmake/deps.cmake
+@@ -18 +18 @@ if (SONIC_LIB AND SONIC_INC)
+-else()
++elseif(NOT DEFINED USE_LIBSONIC OR USE_LIBSONIC)
+diff --git a/src/include/compat/wctype.h b/src/include/compat/wctype.h
+index e0d2c64..c6f00f5 100644
+--- a/src/include/compat/wctype.h
++++ b/src/include/compat/wctype.h
+@@ -32,0 +33,5 @@
++#ifdef __EMSCRIPTEN__
++/* Pipread 2026: load musl declarations before remapping classification names. */
++#include_next <wchar.h>
++#endif
++

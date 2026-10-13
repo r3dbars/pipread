@@ -1,0 +1,6 @@
+{
+  "inputDir": "examples/posts",
+  "outputDir": "public/pipread",
+  "selector": "article",
+  "dtype": "fp32"
+}

@@ -1,0 +1,20 @@
+# Illustrative steps to insert into YOUR existing GitHub job, not an installed workflow.
+# Assumes your blog and a reviewed, pinned Pipread source checkout already exist.
+# Use a runner/Node version you have validated with ONNX Runtime (Mac tested).
+# Restore both caches before these steps using your existing cache/artifact policy:
+#   blog/.pipread-cache/       pinned local model files
+#   blog/public/pipread/       manifest + all generated audio/timings/player
+# Then persist them and publish the blog using your existing deployment permissions.
+- name: Install Pipread dependencies
+  working-directory: pipread-tool
+  run: npm ci --ignore-scripts
+- name: Build blog HTML
+  working-directory: blog
+  run: npm run build
+- name: Preview narration changes
+  run: node pipread-tool/bin/pipread.mjs generate --config blog/pipread.json
+- name: Generate only new or changed narration
+  run: node pipread-tool/bin/pipread.mjs generate --config blog/pipread.json --write
+# If your framework copies public/ during build, run that final copy/build again
+# after generation, without moving/removing the configured input HTML directory.
+# Upload files atomically with manifest.json, or publish the manifest last.

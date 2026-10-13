@@ -1,6 +1,10 @@
 # Local build/dependency/runtime artifacts
 node_modules/
 dist/
+dist-browser-local/
+.pipread-cache/
+public/pipread/
+:memory:.ses
 *.onnx
 *.wasm
 *.bin
@@ -21,6 +25,7 @@ docs/*
 !docs/LICENSING.md
 !docs/SETUP.md
 !docs/HIGHLIGHTING.md
+!docs/STATIC_VERIFICATION.md
 *.log
 *.article-voice-backup
 .article-voice-init.json
