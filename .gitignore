@@ -1,0 +1,29 @@
+# Local build/dependency/runtime artifacts
+node_modules/
+dist/
+*.onnx
+*.wasm
+*.bin
+*.wav
+*.mp3
+*.zip
+*.tgz
+# Private workspace and local evidence
+.codex/
+.agents/
+.aws/
+.env
+.env.*
+!.env.example
+references/
+docs/*
+!docs/RELEASE.md
+!docs/LICENSING.md
+!docs/SETUP.md
+!docs/HIGHLIGHTING.md
+*.log
+*.article-voice-backup
+.article-voice-init.json
+test-results/
+playwright-report/
+.DS_Store

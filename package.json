@@ -1,0 +1,36 @@
+{
+  "name": "pipread",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "playwright test",
+    "benchmark": "node tests/benchmark.mjs",
+    "test:cli": "node --test tests/cli.test.mjs"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "3.8.1",
+    "kokoro-js": "1.2.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "vite": "7.3.7"
+  },
+  "overrides": {
+    "@huggingface/transformers": {
+      "sharp": "0.35.5",
+      "onnxruntime-node": "1.30.0"
+    }
+  },
+  "bin": {
+    "pipread": "bin/pipread.mjs"
+  },
+  "engines": {
+    "node": ">=22.12"
+  },
+  "description": "A tiny local-first article audio player. Source-only preview."
+}
