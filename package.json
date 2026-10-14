@@ -6,13 +6,18 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "vite build",
+    "build": "vite build && node tools/build-site.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "test": "playwright test",
     "benchmark": "node tests/benchmark.mjs",
-    "test:cli": "node --test tests/cli.test.mjs tests/batch.test.mjs",
+    "test:cli": "node --test tests/cli.test.mjs tests/batch.test.mjs tests/static-loading.test.mjs",
     "demo:audio": "node bin/pipread.mjs generate --config pipread.demo.json --write",
-    "build:browser-local": "vite build --config vite.browser-local.config.js"
+    "build:browser-local": "vite build --config vite.browser-local.config.js",
+    "site:dev": "vite website/public --host 127.0.0.1",
+    "test:site": "cd website && node tests/player.cjs && node tests/follow.cjs && node tests/follow-integration.cjs && node tests/word-data.cjs",
+    "test:alignment": "node --test tests/alignment.test.mjs",
+    "check": "npm run test:cli && npm run test:alignment && npm run test:site && npm run build",
+    "build:site": "node tools/build-site.mjs"
   },
   "dependencies": {
     "@huggingface/transformers": "3.8.1",

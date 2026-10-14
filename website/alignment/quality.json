@@ -1,0 +1,531 @@
+{
+  "status": "Complete automated acoustic alignment with one clearly low-confidence function-word interval; human listening/boundary annotation not performed",
+  "outputSha256": "daa0505b401b210972d1bb9e3dc28055a838546e3d6ac86c1c4f67d9a2f5dca6",
+  "tokenCount": 242,
+  "paragraphTokenCounts": [
+    6,
+    30,
+    48,
+    39,
+    50,
+    41,
+    28
+  ],
+  "exactTranscriptTokenMatch": true,
+  "unmatchedTokens": [],
+  "publishedTextSubstitutions": [],
+  "alignmentInputNormalizations": [
+    {
+      "chunk": 0,
+      "original": "For",
+      "alignmentText": "for"
+    },
+    {
+      "chunk": 0,
+      "original": "you’d",
+      "alignmentText": "you'd"
+    },
+    {
+      "chunk": 1,
+      "original": "I",
+      "alignmentText": "i"
+    },
+    {
+      "chunk": 1,
+      "original": "Pipread",
+      "alignmentText": "pipread"
+    },
+    {
+      "chunk": 1,
+      "original": "I",
+      "alignmentText": "i"
+    },
+    {
+      "chunk": 1,
+      "original": "button.",
+      "alignmentText": "button"
+    },
+    {
+      "chunk": 2,
+      "original": "Sometimes",
+      "alignmentText": "sometimes"
+    },
+    {
+      "chunk": 2,
+      "original": "wrote.",
+      "alignmentText": "wrote"
+    },
+    {
+      "chunk": 3,
+      "original": "I",
+      "alignmentText": "i"
+    },
+    {
+      "chunk": 3,
+      "original": "open.",
+      "alignmentText": "open"
+    },
+    {
+      "chunk": 4,
+      "original": "Right",
+      "alignmentText": "right"
+    },
+    {
+      "chunk": 4,
+      "original": "now,",
+      "alignmentText": "now"
+    },
+    {
+      "chunk": 4,
+      "original": "ElevenLabs,",
+      "alignmentText": "elevenlabs"
+    },
+    {
+      "chunk": 4,
+      "original": "character.",
+      "alignmentText": "character"
+    },
+    {
+      "chunk": 5,
+      "original": "That",
+      "alignmentText": "that"
+    },
+    {
+      "chunk": 5,
+      "original": "publisher.",
+      "alignmentText": "publisher"
+    },
+    {
+      "chunk": 6,
+      "original": "For",
+      "alignmentText": "for"
+    },
+    {
+      "chunk": 6,
+      "original": "blog,",
+      "alignmentText": "blog"
+    },
+    {
+      "chunk": 6,
+      "original": "it’s",
+      "alignmentText": "it's"
+    },
+    {
+      "chunk": 6,
+      "original": "ask.",
+      "alignmentText": "ask"
+    },
+    {
+      "chunk": 7,
+      "original": "So",
+      "alignmentText": "so"
+    },
+    {
+      "chunk": 7,
+      "original": "Pipread",
+      "alignmentText": "pipread"
+    },
+    {
+      "chunk": 7,
+      "original": "simple.",
+      "alignmentText": "simple"
+    },
+    {
+      "chunk": 8,
+      "original": "A",
+      "alignmentText": "a"
+    },
+    {
+      "chunk": 8,
+      "original": "once,",
+      "alignmentText": "once"
+    },
+    {
+      "chunk": 8,
+      "original": "computer.",
+      "alignmentText": "computer"
+    },
+    {
+      "chunk": 9,
+      "original": "You",
+      "alignmentText": "you"
+    },
+    {
+      "chunk": 9,
+      "original": "articles,",
+      "alignmentText": "articles"
+    },
+    {
+      "chunk": 9,
+      "original": "play.",
+      "alignmentText": "play"
+    },
+    {
+      "chunk": 10,
+      "original": "The",
+      "alignmentText": "the"
+    },
+    {
+      "chunk": 10,
+      "original": "snippet.",
+      "alignmentText": "snippet"
+    },
+    {
+      "chunk": 11,
+      "original": "Readers",
+      "alignmentText": "readers"
+    },
+    {
+      "chunk": 11,
+      "original": "play,",
+      "alignmentText": "play"
+    },
+    {
+      "chunk": 11,
+      "original": "pause,",
+      "alignmentText": "pause"
+    },
+    {
+      "chunk": 11,
+      "original": "ahead,",
+      "alignmentText": "ahead"
+    },
+    {
+      "chunk": 11,
+      "original": "back.",
+      "alignmentText": "back"
+    },
+    {
+      "chunk": 12,
+      "original": "Readers",
+      "alignmentText": "readers"
+    },
+    {
+      "chunk": 12,
+      "original": "text.",
+      "alignmentText": "text"
+    },
+    {
+      "chunk": 13,
+      "original": "Use",
+      "alignmentText": "use"
+    },
+    {
+      "chunk": 13,
+      "original": "audio,",
+      "alignmentText": "audio"
+    },
+    {
+      "chunk": 13,
+      "original": "page.",
+      "alignmentText": "page"
+    },
+    {
+      "chunk": 14,
+      "original": "There’s",
+      "alignmentText": "there's"
+    },
+    {
+      "chunk": 14,
+      "original": "API",
+      "alignmentText": "api"
+    },
+    {
+      "chunk": 14,
+      "original": "per-character",
+      "alignmentText": "percharacter"
+    },
+    {
+      "chunk": 14,
+      "original": "bill.",
+      "alignmentText": "bill"
+    },
+    {
+      "chunk": 15,
+      "original": "When",
+      "alignmentText": "when"
+    },
+    {
+      "chunk": 15,
+      "original": "posts,",
+      "alignmentText": "posts"
+    },
+    {
+      "chunk": 15,
+      "original": "changed.",
+      "alignmentText": "changed"
+    },
+    {
+      "chunk": 16,
+      "original": "The",
+      "alignmentText": "the"
+    },
+    {
+      "chunk": 16,
+      "original": "source.",
+      "alignmentText": "source"
+    },
+    {
+      "chunk": 17,
+      "original": "Kokoro,",
+      "alignmentText": "kokoro"
+    },
+    {
+      "chunk": 17,
+      "original": "model,",
+      "alignmentText": "model"
+    },
+    {
+      "chunk": 17,
+      "original": "you’re",
+      "alignmentText": "you're"
+    },
+    {
+      "chunk": 17,
+      "original": "demo.",
+      "alignmentText": "demo"
+    },
+    {
+      "chunk": 18,
+      "original": "The",
+      "alignmentText": "the"
+    },
+    {
+      "chunk": 18,
+      "original": "simple.",
+      "alignmentText": "simple"
+    },
+    {
+      "chunk": 19,
+      "original": "Keep",
+      "alignmentText": "keep"
+    },
+    {
+      "chunk": 19,
+      "original": "do,",
+      "alignmentText": "do"
+    },
+    {
+      "chunk": 19,
+      "original": "button,",
+      "alignmentText": "button"
+    },
+    {
+      "chunk": 19,
+      "original": "words.",
+      "alignmentText": "words"
+    }
+  ],
+  "monotonicNonoverlappingWithinPassages": true,
+  "interpolatedTimestamps": false,
+  "brandAndAcronymChecks": [
+    {
+      "text": "Pipread",
+      "start": 3.343,
+      "end": 3.864,
+      "paragraph": 1,
+      "score": 0.808,
+      "chunk": 1
+    },
+    {
+      "text": "ElevenLabs,",
+      "start": 21.615,
+      "end": 22.376,
+      "paragraph": 2,
+      "score": 0.846,
+      "chunk": 4
+    },
+    {
+      "text": "Pipread",
+      "start": 30.847,
+      "end": 31.269,
+      "paragraph": 3,
+      "score": 0.678,
+      "chunk": 7
+    },
+    {
+      "text": "API",
+      "start": 64.315,
+      "end": 64.818,
+      "paragraph": 5,
+      "score": 0.888,
+      "chunk": 14
+    },
+    {
+      "text": "per-character",
+      "start": 65.763,
+      "end": 66.326,
+      "paragraph": 5,
+      "score": 0.902,
+      "chunk": 14
+    },
+    {
+      "text": "Kokoro,",
+      "start": 74.396,
+      "end": 74.898,
+      "paragraph": 5,
+      "score": 0.709,
+      "chunk": 17
+    }
+  ],
+  "lowConfidenceTokens": [
+    {
+      "text": "a",
+      "paragraph": 1,
+      "start": 8.72,
+      "end": 8.76,
+      "score": 0.499,
+      "paragraphStart": 8.726,
+      "paragraphEnd": 8.747,
+      "paragraphScore": 0.997,
+      "maxBoundaryDifference": 0.013
+    },
+    {
+      "text": "to",
+      "paragraph": 3,
+      "start": 41.852,
+      "end": 41.892,
+      "score": 0.048,
+      "paragraphStart": 41.853,
+      "paragraphEnd": 41.893,
+      "paragraphScore": 0.182,
+      "maxBoundaryDifference": 0.001
+    },
+    {
+      "text": "a",
+      "paragraph": 4,
+      "start": 49.563,
+      "end": 49.603,
+      "score": 0.498,
+      "paragraphStart": 49.559,
+      "paragraphEnd": 49.599,
+      "paragraphScore": 0.5,
+      "maxBoundaryDifference": 0.004
+    }
+  ],
+  "uncertainTokenRecommendation": "The word to at 41.852–41.892s has score 0.048 (paragraph cross-check 0.182) and is omitted by greedy decoding. Its forced boundary is stable to 1ms, but acoustic evidence is weak. Retain this model-derived interval as flagged, or use paragraph fallback there; do not describe it as manually verified. No timestamp was moved to raise confidence.",
+  "boundaryStability": {
+    "comparison": "Same acoustic model with independent paragraph windows; stability is not measured accuracy",
+    "medianMaxBoundaryDifferenceSeconds": 0.009,
+    "p95MaxBoundaryDifferenceSeconds": 0.026,
+    "maximumBoundaryDifferenceSeconds": 0.084,
+    "over150ms": 0
+  },
+  "punctuation": "Original punctuation, Unicode contractions, casing and hyphens preserved in output token text. Punctuation has no independent acoustic timestamp.",
+  "repeatedWords": "All tokens reconciled by sequential position within source chunks and paragraphs, not global string search; repeated words retain independent intervals.",
+  "paragraphPauses": [
+    {
+      "start": 2.3,
+      "end": 2.6,
+      "allZeroPcm": true
+    },
+    {
+      "start": 12.05,
+      "end": 12.35,
+      "allZeroPcm": true
+    },
+    {
+      "start": 30.025,
+      "end": 30.325,
+      "allZeroPcm": true
+    },
+    {
+      "start": 44.875,
+      "end": 45.175,
+      "allZeroPcm": true
+    },
+    {
+      "start": 63.15,
+      "end": 63.45,
+      "allZeroPcm": true
+    },
+    {
+      "start": 79.375,
+      "end": 79.67500000000001,
+      "allZeroPcm": true
+    }
+  ],
+  "shortIntervals": [
+    {
+      "text": "a",
+      "start": 5.731,
+      "end": 5.751,
+      "paragraph": 1,
+      "score": 0.976,
+      "chunk": 1
+    },
+    {
+      "text": "a",
+      "start": 27.577,
+      "end": 27.597,
+      "paragraph": 2,
+      "score": 0.998,
+      "chunk": 6
+    },
+    {
+      "text": "a",
+      "start": 28.861,
+      "end": 28.881,
+      "paragraph": 2,
+      "score": 0.999,
+      "chunk": 6
+    },
+    {
+      "text": "a",
+      "start": 84.569,
+      "end": 84.589,
+      "paragraph": 6,
+      "score": 0.999,
+      "chunk": 19
+    }
+  ],
+  "shortIntervalNote": "Four a tokens occupy one acoustic frame (~20ms). Do not extend them by interpolation; display may be brief at high playback speed.",
+  "greedyDiagnostics": [
+    {
+      "chunk": 1,
+      "text": "I built Pipread because I think every blog should have a play button.",
+      "alignmentModelGreedyRecognition": "i built pipreed because i think every blog should have a play button "
+    },
+    {
+      "chunk": 2,
+      "text": "Sometimes you just want to go for a walk or make coffee and hear what someone wrote.",
+      "alignmentModelGreedyRecognition": "sometimes you just want to go for a walk or make coffee and hear what some one wrote "
+    },
+    {
+      "chunk": 4,
+      "text": "Right now, most narration on the web runs through paid cloud voice services like ElevenLabs, billed by the character.",
+      "alignmentModelGreedyRecognition": "right now most narration on the web runs through paid cloud voie services like eleven labs build by the character "
+    },
+    {
+      "chunk": 7,
+      "text": "So Pipread keeps it simple.",
+      "alignmentModelGreedyRecognition": "so piprid keeps it simple "
+    },
+    {
+      "chunk": 9,
+      "text": "You publish the audio files next to your articles, and readers just press play.",
+      "alignmentModelGreedyRecognition": "you publish the audiophiles next your articles and readers just press play "
+    },
+    {
+      "chunk": 10,
+      "text": "The project also includes a simple player you can add to your blog with a code snippet.",
+      "alignmentModelGreedyRecognition": "the project also includes a simple player you can add to your blog with a code snippet "
+    },
+    {
+      "chunk": 14,
+      "text": "There’s no API key and no per-character bill.",
+      "alignmentModelGreedyRecognition": "there's no a p i ky and no per character bill "
+    },
+    {
+      "chunk": 17,
+      "text": "Kokoro, an open voice model, generated the audio you’re hearing in this demo.",
+      "alignmentModelGreedyRecognition": "cocuro an open voice model generated the audio your hearing in the stemo "
+    }
+  ],
+  "limitations": [
+    "Model-based boundaries with approximately 20ms acoustic frames; millisecond serialization is not millisecond accuracy.",
+    "Greedy recognition variants for brand names are diagnostics only; source transcript remains unchanged.",
+    "No human listening or manual phonetic annotation was performed.",
+    "No Site deployment or audio regeneration."
+  ]
+}

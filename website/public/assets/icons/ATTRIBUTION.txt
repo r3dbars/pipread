@@ -1,0 +1,5 @@
+Solar icons by 480 Design. Licensed CC BY 4.0.
+https://www.figma.com/community/file/1166831539721848736
+https://creativecommons.org/licenses/by/4.0/
+Source: https://github.com/iconify/icon-sets/blob/master/json/solar.json
+Changes: currentColor replaced with Pipread charcoal for standalone assets; size set in CSS. Geometry unchanged.

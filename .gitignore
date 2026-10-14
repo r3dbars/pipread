@@ -25,6 +25,7 @@ docs/*
 !docs/LICENSING.md
 !docs/SETUP.md
 !docs/HIGHLIGHTING.md
+!docs/WORD_TIMINGS.md
 !docs/STATIC_VERIFICATION.md
 *.log
 *.article-voice-backup
@@ -32,3 +33,15 @@ docs/*
 test-results/
 playwright-report/
 .DS_Store
+
+# Public static website demo and documentation assets
+!website/public/assets/narration-4d232dd92529.wav
+!docs/ASSETS.md
+!docs/media/
+!docs/media/**
+.venv-align/
+.alignment-model/
+__pycache__/
+*.pyc
+.openai/
+dist-site/

@@ -120,7 +120,20 @@ if (command === "generate") {
         throw Error(
           "Target must be empty; existing files will not be overwritten.",
         );
+      const treeFiles = async (relative) => {
+        const entries = await readdir(join(root, relative), {withFileTypes:true});
+        const files=[];
+        for(const entry of entries) {
+          if(entry.name.startsWith('.') || entry.name==='__pycache__') continue;
+          const name=relative+'/'+entry.name;
+          if(entry.isDirectory()) files.push(...await treeFiles(name));
+          else if(entry.isFile()) files.push(name);
+        }
+        return files;
+      };
       const files = [
+        ...await treeFiles('website'),
+
         ".gitignore",
         "package.json",
         "package-lock.json",
@@ -133,6 +146,19 @@ if (command === "generate") {
         "tests/cli.test.mjs",
         "tests/batch.test.mjs",
         "tests/static-player.spec.js",
+        "tests/static-words.spec.js",
+        "tests/static-loading.test.mjs",
+        "tests/alignment.test.mjs",
+        "docs/ASSETS.md",
+        "docs/media/pipread-word-highlighting.gif",
+        "tools/build-site.mjs",
+        "tools/alignment/align.py",
+        "tools/alignment/attach.mjs",
+        "tools/alignment/download_model.py",
+        "tools/alignment/model-files.json",
+        "tools/alignment/requirements.txt",
+        "tools/alignment/README.md",
+        "docs/WORD_TIMINGS.md",
         "tests/player.spec.js",
         "tests/benchmark.mjs",
         "docs/HIGHLIGHTING.md",

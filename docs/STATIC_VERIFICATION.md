@@ -1,26 +1,54 @@
-# Static narration verification — 2026-10-13
+# Static narration and website verification
 
-Host: macOS Apple Silicon, Node 24.21.0, desktop Chrome 155. No npm publication, runtime-binary upload, Site edit, or CI permission change was performed.
+## Current integration — 2026-10-14
 
-## Passed
+Host: macOS Apple Silicon, Node 24.21.0, Playwright Chromium 156.
 
-- Clean `npm ci --ignore-scripts`: 82 installed packages, 0 reported vulnerabilities.
-- `npm run test:cli`: 10 tests covering dry-run, initial generation, incremental reuse, changed/new/deleted inputs, config invalidation, missing output recovery, edited output refusal, generation failure recovery, locks, paths/symlinks, script-free article extraction, scaffold, static integration, backup and idempotence.
-- `npm test`: 27 browser tests, including 4 static-player tests and 23 existing local-synthesis lifecycle/highlighting tests. Static player tests use real native media playback over controlled WAV responses; neural inference is separately exercised below.
-- Static controls: play, pause/resume, ±15-second skips, pitch-preserving rate, seek, optional passage highlights, fetch errors/retry affordance, source-change/disconnect cancellation, and 390/320px layout. No model/runtime requests in the static-player test.
-- `npm run build`: static demo plus approximately 6 KB compiled player JS; no model, ONNX/WASM runtime or TTS worker. `npm run build:browser-local`: separate optional runtime build passed; distribution remains held.
-- Real Kokoro Heart fp32 CLI generation of a six-paragraph article: 102.325 seconds of mono 24 kHz PCM16 WAV. Text matched the supplied transcript; paragraph boundaries came directly from sample counts, with 0.3-second pauses. Audio SHA-256: `6d8cb123308b8d426f41e6492565ec55cb09ad9f0ea5fc595e65741612a3c78c`.
-- Separate real short-post incremental sequence, cached pinned model: fresh 745 ms; unchanged 3 ms with no engine load; changed plus new 926 ms; deleted input 7 ms, retired and its old audio preserved. These are individual local measurements, not guarantees or cold-download timings.
-- Real included demo narration generated successfully (23 chunks).
+- Fresh `npm ci --ignore-scripts`: 82 packages installed, zero reported vulnerabilities.
+- `npm run check`: 14 CLI/loading regressions, the alignment-attachment suite,
+  all four website suites, the reusable-player build and static website build pass.
+- Headless `npm test`: 34 pass, one optional local-PCM test skips when its
+  uncommitted recording is absent. No voice model is required for these fixtures.
+- Regressions cover repeated words and duplicate paragraphs, text across inline
+  elements, mutations, invalid intervals, error cleanup, independent optional
+  timing fetches, source resets, HTML formatting newlines, seeking and speed.
+- The website suites check every real body-word midpoint, the Highlight cycle,
+  media-clock behavior and exact recording/transcript/alignment hashes.
+- A fresh Python 3.12 environment installed the 36 pinned alignment packages.
+  The public helper verified cached model files, ran inference offline and
+  reproduced the committed 242-word JSON byte for byte. SHA-256:
+  `daa0505b401b210972d1bb9e3dc28055a838546e3d6ac86c1c4f67d9a2f5dca6`.
+  Attaching those real timings to a manifest succeeded and repeating was a no-op.
+- The branded website includes its complete approved art, fonts, icons, 88.675-second
+  PCM16 WAV, paragraph/chunk timings, transcript and alignment reports. The README
+  GIF is a real muted capture; it is not an audible listening audit.
+- The new GitHub Actions workflow runs install, checks and headless browser tests.
+  It performs no deployment, package publication, speech generation or alignment.
+  Hosted results are available on the repository's Actions tab.
 
-## Failures found and resolved
+## Earlier real generation checks
 
-The initial static-player seek fixture returned full WAV responses without byte-range semantics, causing Chrome to reset seeking to zero. The fixture now supplies correct HTTP 206 Content-Range responses and seeking passes. Hosts still must serve usable range responses; this player does not silently download the entire WAV into a Blob as a fallback.
+Kokoro Heart fp32 was exercised locally with the pinned model. A separate
+six-paragraph article produced 102.325 seconds of mono 24 kHz PCM16 audio;
+paragraph boundaries came from sample counts with 0.3-second pauses. A short-post
+incremental sequence verified initial generation, unchanged reuse without engine
+load, changed/new inputs, and retirement of deleted inputs while preserving audio.
+These are local results, not cross-platform or cold-download performance claims.
 
-## Not established
+## Limits
 
-The new batch CLI's first-download timings, q8 voice quality, non-Mac runners, actual GitHub Actions execution, mobile devices, Safari/Firefox, offline/background playback, and subjective listening quality are not certified by these tests. A mocked narrow viewport is not a mobile device test. HTML extraction does not calculate external CSS visibility. Read-along timings are chunk/paragraph boundaries, not word forced alignment.
+Word boundaries are acoustic forced alignment, not human annotation. The bundled
+recording has a weak “to” interval at 41.852–41.892 seconds and four very short “a”
+intervals. No invented or interpolated word intervals are used. See the reports
+in `website/alignment/` and the optional helper documentation.
 
-Native ONNX Runtime emitted a telemetry device-ID persistence warning; no supported disable control was established in the installed Node binding. Do not claim native-runtime telemetry is disabled. Article text is passed only to local inference; explicit model fetches carry no article text. The static browser player has no analytics/inference dependencies.
+Safari, Firefox, physical mobile devices, background/offline playback, q8 voice
+quality and generation on non-Mac hosts remain unverified. Narrow viewport tests
+are layout checks. HTML extraction does not calculate external CSS visibility.
+Static hosts must support usable byte-range requests for media seeking.
 
-The source-built eSpeak replacement is opt-in and separately documented in `experimental/phonemizer/README.md`. Reproducible local binaries do not remove the optional browser-runtime distribution hold: browser execution tests and the full corresponding-source/notice package are unfinished.
+Native ONNX Runtime emitted a telemetry device-ID persistence warning during
+prior generation; no supported disable control was established. The static player
+has no analytics or inference dependencies. The separate browser-local synthesis
+runtime remains an unpublished experiment with unresolved distribution work;
+see `docs/LICENSING.md` and `docs/RELEASE.md`.

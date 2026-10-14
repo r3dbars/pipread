@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "voice": "af_heart",
+  "model": "onnx-community/Kokoro-82M-v1.0-ONNX",
+  "revision": "1939ad2a8e416c0acfeecc08a694d14ef25f2231",
+  "modelHash": "8fbea51ea711f2af382e88c833d9e288c6dc82ce5e98421ea61c058ce21a34cb",
+  "voiceHash": "d583ccff3cdca2f7fae535cb998ac07e9fcb90f09737b9a41fa2734ec44a8f0b",
+  "dtype": "fp32",
+  "speed": 1,
+  "paragraphPause": 0.3,
+  "duration": 88.675,
+  "sampleRate": 24000,
+  "text": "For the days you’d rather listen\n\nI built Pipread because I think every blog should have a play button. Sometimes you just want to go for a walk or make coffee and hear what someone wrote.\n\nI also think good text to speech should be free and open. Right now, most narration on the web runs through paid cloud voice services like ElevenLabs, billed by the character. That can make sense for a big publisher. For a personal blog, it’s a lot to ask.\n\nSo Pipread keeps it simple. A small command line tool downloads an open voice model once, then narrates your posts right on your own computer. You publish the audio files next to your articles, and readers just press play.\n\nThe project also includes a simple player you can add to your blog with a code snippet. Readers can play, pause, skip ahead, or jump back. Readers can also follow along with highlighted text. Use the command line tool to generate the audio, then add the player to your page.\n\nThere’s no API key and no per-character bill. When you add or edit posts, it only redoes the ones that changed. The code is free and open source. Kokoro, an open voice model, generated the audio you’re hearing in this demo.\n\nThe idea is pretty simple. Keep writing the way you always do, add a play button, and give people one more way to spend time with your words.",
+  "paragraphs": [
+    {
+      "text": "For the days you’d rather listen",
+      "start": 0,
+      "end": 2.3
+    },
+    {
+      "text": "I built Pipread because I think every blog should have a play button. Sometimes you just want to go for a walk or make coffee and hear what someone wrote.",
+      "start": 2.6,
+      "end": 12.05
+    },
+    {
+      "text": "I also think good text to speech should be free and open. Right now, most narration on the web runs through paid cloud voice services like ElevenLabs, billed by the character. That can make sense for a big publisher. For a personal blog, it’s a lot to ask.",
+      "start": 12.35,
+      "end": 30.025
+    },
+    {
+      "text": "So Pipread keeps it simple. A small command line tool downloads an open voice model once, then narrates your posts right on your own computer. You publish the audio files next to your articles, and readers just press play.",
+      "start": 30.325,
+      "end": 44.875
+    },
+    {
+      "text": "The project also includes a simple player you can add to your blog with a code snippet. Readers can play, pause, skip ahead, or jump back. Readers can also follow along with highlighted text. Use the command line tool to generate the audio, then add the player to your page.",
+      "start": 45.175,
+      "end": 63.15
+    },
+    {
+      "text": "There’s no API key and no per-character bill. When you add or edit posts, it only redoes the ones that changed. The code is free and open source. Kokoro, an open voice model, generated the audio you’re hearing in this demo.",
+      "start": 63.45,
+      "end": 79.375
+    },
+    {
+      "text": "The idea is pretty simple. Keep writing the way you always do, add a play button, and give people one more way to spend time with your words.",
+      "start": 79.67500000000001,
+      "end": 88.67500000000001
+    }
+  ],
+  "sentences": [
+    {
+      "text": "For the days you’d rather listen",
+      "paragraph": 0,
+      "start": 0,
+      "end": 2.3
+    },
+    {
+      "text": "I built Pipread because I think every blog should have a play button.",
+      "paragraph": 1,
+      "start": 2.6,
+      "end": 6.875
+    },
+    {
+      "text": "Sometimes you just want to go for a walk or make coffee and hear what someone wrote.",
+      "paragraph": 1,
+      "start": 6.875,
+      "end": 12.05
+    },
+    {
+      "text": "I also think good text to speech should be free and open.",
+      "paragraph": 2,
+      "start": 12.35,
+      "end": 16.325
+    },
+    {
+      "text": "Right now, most narration on the web runs through paid cloud voice services like ElevenLabs, billed by the character.",
+      "paragraph": 2,
+      "start": 16.325,
+      "end": 24.4
+    },
+    {
+      "text": "That can make sense for a big publisher.",
+      "paragraph": 2,
+      "start": 24.4,
+      "end": 27.075
+    },
+    {
+      "text": "For a personal blog, it’s a lot to ask.",
+      "paragraph": 2,
+      "start": 27.075,
+      "end": 30.025
+    },
+    {
+      "text": "So Pipread keeps it simple.",
+      "paragraph": 3,
+      "start": 30.325,
+      "end": 32.475
+    },
+    {
+      "text": "A small command line tool downloads an open voice model once, then narrates your posts right on your own computer.",
+      "paragraph": 3,
+      "start": 32.475,
+      "end": 39.75
+    },
+    {
+      "text": "You publish the audio files next to your articles, and readers just press play.",
+      "paragraph": 3,
+      "start": 39.75,
+      "end": 44.875
+    },
+    {
+      "text": "The project also includes a simple player you can add to your blog with a code snippet.",
+      "paragraph": 4,
+      "start": 45.175,
+      "end": 50.824999999999996
+    },
+    {
+      "text": "Readers can play, pause, skip ahead, or jump back.",
+      "paragraph": 4,
+      "start": 50.824999999999996,
+      "end": 54.199999999999996
+    },
+    {
+      "text": "Readers can also follow along with highlighted text.",
+      "paragraph": 4,
+      "start": 54.199999999999996,
+      "end": 57.8
+    },
+    {
+      "text": "Use the command line tool to generate the audio, then add the player to your page.",
+      "paragraph": 4,
+      "start": 57.8,
+      "end": 63.15
+    },
+    {
+      "text": "There’s no API key and no per-character bill.",
+      "paragraph": 5,
+      "start": 63.45,
+      "end": 67.05000000000001
+    },
+    {
+      "text": "When you add or edit posts, it only redoes the ones that changed.",
+      "paragraph": 5,
+      "start": 67.05000000000001,
+      "end": 71.55000000000001
+    },
+    {
+      "text": "The code is free and open source.",
+      "paragraph": 5,
+      "start": 71.55000000000001,
+      "end": 74.07499999999999
+    },
+    {
+      "text": "Kokoro, an open voice model, generated the audio you’re hearing in this demo.",
+      "paragraph": 5,
+      "start": 74.07499999999999,
+      "end": 79.375
+    },
+    {
+      "text": "The idea is pretty simple.",
+      "paragraph": 6,
+      "start": 79.67500000000001,
+      "end": 81.92500000000001
+    },
+    {
+      "text": "Keep writing the way you always do, add a play button, and give people one more way to spend time with your words.",
+      "paragraph": 6,
+      "start": 81.92500000000001,
+      "end": 88.67500000000001
+    }
+  ],
+  "timingKind": "Exact generated chunk boundaries; not word alignment"
+}

@@ -1,0 +1,21 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,writeFile,readFile,readdir,realpath} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {createHash} from 'node:crypto';
+import {spawnSync} from 'node:child_process';
+const hash=b=>createHash('sha256').update(b).digest('hex');
+test('attach verifies exact audio/transcript, dry-run, immutable sidecar and idempotence',async()=>{
+ const dir=await mkdtemp(join(await realpath(tmpdir()),'pipread-align-')),audio=Buffer.from('fixture audio'),audioName=hash(audio)+'.wav';
+ const timing=JSON.stringify({version:1,duration:2,paragraphs:[{text:'Go go.',start:0,end:2}]}),timingName=hash(timing)+'.json';
+ const manifest={version:1,articles:{'post.html':{audio:audioName,audioHash:hash(audio),timing:timingName,timingHash:hash(timing)}}};
+ const m=join(dir,'manifest.json'),w=join(dir,'words.json');await writeFile(m,JSON.stringify(manifest));await writeFile(join(dir,audioName),audio);await writeFile(join(dir,timingName),timing);
+ const words={kind:'aligned-words',audioSha256:hash(audio),duration:2,words:[{paragraph:0,text:'Go',start:0,end:.5},{paragraph:0,text:'go.',start:1,end:1.5}]};await writeFile(w,JSON.stringify(words));
+ const run=(...more)=>spawnSync(process.execPath,[new URL('../tools/alignment/attach.mjs',import.meta.url).pathname,'--manifest',m,'--article','post.html','--words',w,...more],{encoding:'utf8'});
+ const dry=run();assert.equal(dry.status,0,dry.stderr);assert.equal((await readdir(dir)).length,4);
+ const result=run('--write');assert.equal(result.status,0,result.stderr);const next=JSON.parse(await readFile(m));assert.notEqual(next.articles['post.html'].timing,timingName);
+ const enriched=JSON.parse(await readFile(join(dir,next.articles['post.html'].timing)));assert.deepEqual(enriched.words.map(x=>[x.offset,x.length]),[[0,2],[3,3]]);
+ assert.match(run('--write').stdout,/Already attached/);
+ words.words[1].text='wrong';await writeFile(w,JSON.stringify(words));assert.notEqual(run('--write').status,0);
+});

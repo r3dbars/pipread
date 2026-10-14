@@ -191,3 +191,7 @@ test("HTML extraction preserves paragraphs and excludes hidden/code/navigation w
     /exactly one/,
   );
 });
+
+test('HTML source formatting whitespace is not a spoken paragraph break', () => {
+  assert.deepEqual(articleText('<article><p>Hello\n  world.</p><p>Next <em>little\n story</em>.</p><p>Line<br>break</p></article>', 'article'), ['Hello world.', 'Next little story.', 'Line', 'break']);
+});

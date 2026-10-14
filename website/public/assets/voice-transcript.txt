@@ -1,0 +1,13 @@
+For the days you’d rather listen
+
+I built Pipread because I think every blog should have a play button. Sometimes you just want to go for a walk or make coffee and hear what someone wrote.
+
+I also think good text to speech should be free and open. Right now, most narration on the web runs through paid cloud voice services like ElevenLabs, billed by the character. That can make sense for a big publisher. For a personal blog, it’s a lot to ask.
+
+So Pipread keeps it simple. A small command line tool downloads an open voice model once, then narrates your posts right on your own computer. You publish the audio files next to your articles, and readers just press play.
+
+The project also includes a simple player you can add to your blog with a code snippet. Readers can play, pause, skip ahead, or jump back. Readers can also follow along with highlighted text. Use the command line tool to generate the audio, then add the player to your page.
+
+There’s no API key and no per-character bill. When you add or edit posts, it only redoes the ones that changed. The code is free and open source. Kokoro, an open voice model, generated the audio you’re hearing in this demo.
+
+The idea is pretty simple. Keep writing the way you always do, add a play button, and give people one more way to spend time with your words.
