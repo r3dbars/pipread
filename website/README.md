@@ -24,8 +24,8 @@ highlight modes follow the audio media clock through seeking, pause and speed
 changes. The title is passage 0; body paragraphs are 1–6. The website currently
 highlights body text, so the spoken title does not receive a word marker.
 
-`tests/` provides four Node suites, including each real body-word midpoint and
-the full control cycle. These DOM/audio fixtures are not a substitute for a real
+`tests/` provides five Node suites, including each real body-word midpoint and
+the full control cycle, and clipboard success/fallback behavior. These DOM/audio fixtures are not a substitute for a real
 browser or listening audit. The README GIF is an actual muted live-site capture.
 
 Optional art-preparation scripts under `tools/art/` use the repository's

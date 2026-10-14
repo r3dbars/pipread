@@ -158,3 +158,17 @@ body:after{content:"";position:absolute;inset:0;z-index:30;pointer-events:none;b
 .transcript-heading button:disabled{cursor:default;opacity:.65}
 .follow-word{border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .follow-word.word-reading{background:#ffe5c4;box-shadow:0 0 0 3px #ffe5c4;color:#2b2a24}
+
+/* A small, practical handoff after the article. */
+.install-section{max-width:1060px;padding:0 10px 34px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 24px;align-items:center}
+.install-section h2{font:560 24px/1.3 var(--text-serif);letter-spacing:-.4px;margin:0 0 7px}
+.install-copy p{font-size:14px;line-height:1.65;color:#747062;margin:0}
+.copy-agent-button{min-height:46px;padding:12px 20px;border:1px solid #d6cebf;border-radius:999px;background:#f3eddf;color:#3c4034;font-size:14px;font-weight:600;white-space:nowrap;transition:background .18s}
+.copy-agent-button:hover{background:#e9e5d8}.copy-agent-button:disabled{opacity:.65;cursor:wait}
+.copy-agent-status{grid-column:1/-1;margin:0;color:#68715b;font-size:12px;line-height:1.5;min-height:18px}
+.agent-prompt-details{grid-column:1/-1;font-size:12px;color:#777264}
+.agent-prompt-details summary{display:inline-flex;min-height:44px;text-decoration:underline;text-underline-offset:4px}
+.agent-prompt-details textarea{display:block;width:100%;max-width:100%;resize:vertical;margin-top:8px;padding:16px;border:1px solid #ddd5c7;border-radius:10px;background:#fffcf6;color:#4e4c42;font:14px/1.65 var(--sans);white-space:pre-wrap;overflow-wrap:anywhere}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:1100px){.install-section{padding-inline:0}}
+@media(max-width:760px){.install-section{grid-template-columns:minmax(0,1fr);gap:12px;padding-bottom:26px}.install-section h2{font-size:22px}.copy-agent-button{justify-self:start}.agent-prompt-details textarea{font-size:16px}}

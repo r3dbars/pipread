@@ -14,7 +14,7 @@
     "demo:audio": "node bin/pipread.mjs generate --config pipread.demo.json --write",
     "build:browser-local": "vite build --config vite.browser-local.config.js",
     "site:dev": "vite website/public --host 127.0.0.1",
-    "test:site": "cd website && node tests/player.cjs && node tests/follow.cjs && node tests/follow-integration.cjs && node tests/word-data.cjs",
+    "test:site": "cd website && node tests/player.cjs && node tests/follow.cjs && node tests/follow-integration.cjs && node tests/word-data.cjs && node tests/copy-agent.cjs",
     "test:alignment": "node --test tests/alignment.test.mjs",
     "check": "npm run test:cli && npm run test:alignment && npm run test:site && npm run build",
     "build:site": "node tools/build-site.mjs"

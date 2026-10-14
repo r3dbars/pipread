@@ -6,7 +6,7 @@ Host: macOS Apple Silicon, Node 24.21.0, Playwright Chromium 156.
 
 - Fresh `npm ci --ignore-scripts`: 82 packages installed, zero reported vulnerabilities.
 - `npm run check`: 14 CLI/loading regressions, the alignment-attachment suite,
-  all four website suites, the reusable-player build and static website build pass.
+  all five website suites, the reusable-player build and static website build pass.
 - Headless `npm test`: 34 pass, one optional local-PCM test skips when its
   uncommitted recording is absent. No voice model is required for these fixtures.
 - Regressions cover repeated words and duplicate paragraphs, text across inline
