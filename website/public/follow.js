@@ -15,7 +15,8 @@
  }
  function currentWord(words,time){let lo=0,hi=words.length-1;while(lo<=hi){const mid=(lo+hi)>>1,w=words[mid];if(time<w.start)hi=mid-1;else if(time>=w.end)lo=mid+1;else return mid;}return -1;}
  function create({audio,button,paragraphs,title,document,loadWords}){
-  let mode='paragraph',words=null,spans=[],previous=-1,frame=0;
+  let mode='paragraph',words=null,spans=[],previous=-1,frame=0,loading=null,failed=false,destroyed=false;
+  const notice=document.getElementById?.('highlight-status');
   const texts=[title.textContent,...paragraphs.map(p=>p.textContent)];
   const label=button.querySelector('.follow-label');
   function paint(){
@@ -24,21 +25,27 @@
    const next=mode==='word'&&active&&words?currentWord(words,time):-1;
    if(previous!==next){if(previous>=0)spans[previous]?.classList.remove('word-reading');if(next>=0)spans[next]?.classList.add('word-reading');previous=next;}
   }
-  function tick(){frame=0;paint();if(!audio.paused&&!audio.ended)frame=root.requestAnimationFrame(tick);}
-  function refresh(){paint();if((audio.paused||audio.ended)&&frame){root.cancelAnimationFrame(frame);frame=0;}if(!audio.paused&&!audio.ended&&!frame)frame=root.requestAnimationFrame(tick);}
+  function tick(){frame=0;paint();if(mode==='word'&&!audio.paused&&!audio.ended&&!destroyed)frame=root.requestAnimationFrame(tick);}
+  function refresh(){paint();if((mode!=='word'||audio.paused||audio.ended||destroyed)&&frame){root.cancelAnimationFrame(frame);frame=0;}if(mode==='word'&&!audio.paused&&!audio.ended&&!frame&&!destroyed)frame=root.requestAnimationFrame(tick);}
   const nextModes={off:'word',word:'paragraph',paragraph:'off'};
   function setMode(next){
    if(!Object.hasOwn(nextModes,next)||next==='word'&&!words)return false;
    mode=next;button.dataset.mode=mode;
-   const name=mode[0].toUpperCase()+mode.slice(1),nextName=nextModes[mode];
+   const name=mode[0].toUpperCase()+mode.slice(1),nextName=words?nextModes[mode]:(mode==='off'?'paragraph':'off');
    button.setAttribute('aria-pressed',String(mode!=='off'));
    button.setAttribute('aria-label',`Highlight: ${name}. Click to ${nextName==='off'?'turn highlighting off':`use ${nextName} highlighting`}.`);
-   label.textContent=`Highlight: ${name}`;paint();return true;
+   label.textContent=`Highlight: ${name}`;refresh();return true;
   }
-  button.onclick=()=>{if(words)setMode(nextModes[mode]);};
-  button.disabled=true;button.title='Paragraph follow; word timings are loading';setMode('paragraph');
+  button.onclick=()=>{setMode(words?nextModes[mode]:(mode==='off'?'paragraph':'off'));if(!words)retry();};
+  button.disabled=false;button.title='Paragraph or Off available; word timings are loading';setMode('paragraph');
   ['timeupdate','play','pause','ended','seeked','loadedmetadata'].forEach(event=>audio.addEventListener(event,refresh));
-  const ready=loadWords().then(data=>{
+  function retry(){
+   if(destroyed||words)return Promise.resolve(Boolean(words));
+   if(loading)return loading;
+   failed=false;button.dataset.words='loading';
+   if(notice)notice.textContent='';
+   loading=Promise.resolve().then(loadWords).then(data=>{
+   if(destroyed)return false;
    const grouped=validateWords(data,texts,audio.duration);
    const filename=audio.dataset.src.split('/').pop();
    if(filename!==data.audioFile)throw Error('Recording filename mismatch');
@@ -51,9 +58,14 @@
     for(const token of tokens){if(/^\s+$/.test(token)){fragment.append(document.createTextNode(token));continue;}const span=document.createElement('span');span.className='follow-word';span.textContent=token;fragment.append(span);words.push(grouped[i+1][n++]);spans.push(span);}
     p.replaceChildren(fragment);
    });
-   button.disabled=false;button.title='Cycle highlighting: Off → Word → Paragraph → Off';refresh();return true;
-  }).catch(()=>{button.title='Word follow is unavailable; paragraph follow remains on';return false;});
-  return {ready,paint,setMode,nextMode:()=>button.onclick(),getMode:()=>mode,destroy(){if(frame)root.cancelAnimationFrame(frame);}};
+   button.dataset.words='ready';button.title='Cycle highlighting: Off → Word → Paragraph → Off';setMode(mode);return true;
+   }).catch(()=>{failed=true;button.dataset.words='unavailable';button.title='Word timing unavailable. Click to switch Paragraph/Off and retry.';if(notice)notice.textContent='Word timing unavailable. Tap Highlight to retry; Paragraph and Off still work.';setMode(mode);return false;}).finally(()=>{loading=null;});
+   return loading;
+  }
+  const retryOnPlay=()=>{if(failed&&!words)retry();};
+  audio.addEventListener('play',retryOnPlay);
+  const ready=retry();
+  return {ready,retry,paint,setMode,nextMode:()=>button.onclick(),getMode:()=>mode,destroy(){destroyed=true;if(frame)root.cancelAnimationFrame(frame);['timeupdate','play','pause','ended','seeked','loadedmetadata'].forEach(event=>audio.removeEventListener?.(event,refresh));audio.removeEventListener?.('play',retryOnPlay);}};
  }
  const api={validateWords,currentWord,create};if(typeof module==='object'&&module.exports)module.exports=api;else root.PipreadFollow=api;
 })(typeof window==='object'?window:globalThis);

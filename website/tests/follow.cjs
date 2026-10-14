@@ -13,7 +13,7 @@ function environment(loaded=data){
  const button=element(),label=element();button.querySelector=()=>label;
  const events={};const audio={playbackRate:1,currentTime:1.2,duration:5,paused:true,ended:false,dataset:{src:'assets/narration-abcdef.wav'},addEventListener(n,fn){(events[n]??=[]).push(fn)},emit(n){for(const fn of events[n]||[])fn()}};
  const document={createDocumentFragment:()=>element(),createTextNode:element,createElement:()=>element()};
- const controller=create({audio,button,paragraphs,title:element('Title'),document,loadWords:()=>Promise.resolve(loaded)});return{controller,audio,button,label,paragraphs};
+ const controller=create({audio,button,paragraphs,title:element('Title'),document,loadWords:()=>typeof loaded==='function'?loaded():Promise.resolve(loaded)});return{controller,audio,button,label,paragraphs};
 }
 (async()=>{
  const e=environment();assert.equal(e.controller.getMode(),'paragraph');assert(e.paragraphs[0].classList.contains('reading'));assert.equal(await e.controller.ready,true);assert.equal(e.button.disabled,false);
@@ -26,7 +26,9 @@ function environment(loaded=data){
  for(let n=0;n<21;n++)e.button.onclick();assert.equal(e.controller.getMode(),'paragraph');
  e.button.onclick();e.button.onclick();assert.equal(e.controller.getMode(),'word');e.audio.currentTime=3.5;e.audio.playbackRate=2;e.audio.emit('seeked');assert(e.paragraphs[1].children[0].classList.contains('word-reading'));e.audio.paused=true;e.audio.emit('pause');assert(e.paragraphs[1].children[0].classList.contains('word-reading'));e.audio.currentTime=1.2;e.audio.playbackRate=.75;e.audio.emit('timeupdate');assert(e.paragraphs[0].children[0].classList.contains('word-reading'));e.button.onclick();assert.equal(e.controller.getMode(),'paragraph');
  e.audio.ended=true;e.controller.paint();assert(!e.paragraphs[0].classList.contains('reading'));
- const bad=environment({...data,kind:'estimated'});assert.equal(await bad.controller.ready,false);assert(bad.button.disabled);assert.equal(bad.controller.setMode('word'),false);bad.button.onclick();assert.equal(bad.controller.getMode(),'paragraph');assert(bad.paragraphs[0].classList.contains('reading'));
- const wrongAudio=environment({...data,audioFile:'other.wav'});assert.equal(await wrongAudio.controller.ready,false);assert(wrongAudio.button.disabled);
+ const bad=environment({...data,kind:'estimated'});assert.equal(await bad.controller.ready,false);assert.equal(bad.button.disabled,false);assert.equal(bad.controller.setMode('word'),false);bad.button.onclick();assert.equal(bad.controller.getMode(),'off');assert(!bad.paragraphs[0].classList.contains('reading'));bad.button.onclick();assert.equal(bad.controller.getMode(),'paragraph');
+ const wrongAudio=environment({...data,audioFile:'other.wav'});assert.equal(await wrongAudio.controller.ready,false);assert.equal(wrongAudio.button.disabled,false);
+ let attempts=0;const recovered=environment(()=>{attempts++;return attempts===1?Promise.reject(Error('Network')):Promise.resolve(data)});assert.equal(await recovered.controller.ready,false);assert.equal(recovered.controller.getMode(),'paragraph');recovered.button.onclick();assert.equal(recovered.controller.getMode(),'off');assert.equal(await recovered.controller.retry(),true);assert.equal(attempts,2);assert.equal(recovered.controller.getMode(),'off');recovered.button.onclick();assert.equal(recovered.controller.getMode(),'word');
+ let finish,calls=0;const delayed=environment(()=>{calls++;return new Promise(r=>finish=r)});await Promise.resolve();delayed.button.onclick();assert.equal(delayed.controller.getMode(),'off');delayed.controller.retry();assert.equal(calls,1);finish(data);assert.equal(await delayed.controller.ready,true);assert.equal(delayed.controller.getMode(),'off');
  console.log('PASS: three-state Off → Word → Paragraph cycle, pause/speed/seek behavior, exact transcript/provenance validation, no estimates, word intervals/gaps/seek/title/end, repeated toggles, text preservation, missing/mismatched data fallback.');
 })().catch(e=>{console.error(e);process.exitCode=1});

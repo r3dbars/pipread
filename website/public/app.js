@@ -147,9 +147,13 @@ if(window.PipreadFollow){
   title:document.getElementById('article-title'),document,
   loadWords:async()=>{
    await loadPreview();
-   const response=await fetch('assets/voice-words.json',{credentials:'same-origin'});
-   if(!response.ok)throw new Error('Aligned words unavailable');
-   return response.json();
+   const controller=new AbortController();
+   const timeout=setTimeout(()=>controller.abort(),10000);
+   try{
+    const response=await fetch('assets/voice-words.json',{credentials:'same-origin',signal:controller.signal});
+    if(!response.ok)throw new Error('Aligned words unavailable');
+    return await response.json();
+   }finally{clearTimeout(timeout);}
   }
  });
 }

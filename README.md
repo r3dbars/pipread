@@ -41,7 +41,7 @@ cd pipread
 npm ci --ignore-scripts
 ```
 
-Create `pipread.json` **in your blog project**. Paths are relative to that file; input and output directories must be separate. Output must initially be absent or empty.
+Create `pipread.json` **in your blog project**. Paths are relative to that file; input and output directories must be separate. The model cache must also be separate from the published output: neither directory may contain the other. Output must initially be absent or empty.
 
 ```json
 {
@@ -63,7 +63,7 @@ node /path/to/pipread/bin/pipread.mjs generate --config ./pipread.json
 node /path/to/pipread/bin/pipread.mjs generate --config ./pipread.json --write
 ```
 
-Run exactly the same command after editing or adding posts. Unchanged narration is reused without loading the model. Deleted inputs disappear from the active manifest; their audio remains on disk so older deployed pages do not break. Nothing deletes old recordings automatically. Missing generated files are repaired; modified outputs are refused rather than silently replaced.
+Run exactly the same command after editing or adding posts. Unchanged narration is reused without loading the model. Deleted inputs disappear from the active manifest; their audio remains on disk, preserving direct asset URLs. An older player embed using the updated manifest will report that the deleted article has no published narration. Keep a versioned manifest and its referenced assets if older deployed pages must remain playable. Nothing deletes old recordings automatically. Missing generated files are repaired; modified outputs are refused rather than silently replaced.
 
 HTML extraction requires exactly one selector match. It excludes navigation, code, controls, hidden/ARIA-hidden/data-no-read elements and inline hidden styles. It does not execute scripts, fetch stylesheets, or calculate CSS class visibility. Use rendered static HTML and explicit `data-no-read` attributes; inspect the generated timing JSON transcript before publishing. `.txt` inputs are also supported, with blank lines separating paragraphs. Framework/Markdown source should be rendered to HTML first.
 
@@ -113,7 +113,7 @@ The first generation downloads model files from Hugging Face and its download in
 
 ## Incremental publishing / GitHub workflow
 
-Build your blog's HTML, run `generate --write`, then publish your normal site plus the generated audio directory. Keep the previous output/manifest and model cache between runs to make generation incremental. If CI starts empty every time, it regenerates every post. Publish a consistent manifest/audio set atomically; don't point readers at a new manifest before its files exist.
+Build your blog's HTML, run `generate --write`, then publish your normal site plus the generated audio directory. Keep the entire previous output directory, including its hidden `.pipread-output.json` ownership marker, and the model cache between runs to make generation incremental. If CI starts empty every time, it regenerates every post. Publish a consistent manifest/audio set atomically; don't point readers at a new manifest before its files exist.
 
 For GitHub Actions, install the pinned source checkout and dependencies on a runner with Node and supported ONNX Runtime; cache `.pipread-cache` and persist the generated output directory as a build artifact or controlled repository content. Use your existing deployment step and permissions. An [illustrative step sequence](examples/github-steps.yml) shows where generation fits. It is not a deployment workflow. The repository now includes a test/build CI workflow; it does not generate speech, publish packages or deploy the website. Pin the Pipread commit you review in your workflow; review the transcript/audio diff before publishing. A local cache is an optimization, not the sole backup of published audio.
 
@@ -128,7 +128,7 @@ npm run site:dev   # branded website with committed demo audio
 npm run check      # CLI + alignment attachment + website tests + both builds
 npx playwright install chromium  # once, for optional browser tests
 npm test           # mocked browser regression suite
-npm run build      # static demo/player only; no speech runtime
+npm run build      # reusable-player sandbox + branded website; no speech runtime
 ```
 
 `npm run build` includes locally generated demo assets if present. User-generated narration stays ignored; the approved website demo WAV and its timing/quality files are committed under `website/`. Safari, Firefox, mobile devices, background playback and offline use remain unverified. Narrow viewport checks are layout tests, not mobile playback certification.

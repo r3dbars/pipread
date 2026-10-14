@@ -72,7 +72,7 @@ offsets, writes an immutable content-hashed timing sidecar, and atomically updat
 the manifest after creating a backup. The WAV is unchanged. It shares the CLI's
 output lock and refuses modified assets. Publish the new sidecar before the new
 manifest. Repeating the attachment is a no-op. Regenerating changed narration
-requires new alignment; unchanged narration keeps its attached words.
+requires new alignment; unchanged narration keeps its attached words. If only the WAV is missing, repair preserves the word sidecar only when regenerated audio has the identical integrity hash. Different regenerated audio receives new asset filenames and paragraph timings, with an explicit message that alignment must be rerun. Missing word sidecars cannot be reconstructed from paragraph timings.
 
 No `generate --align` or `--words` flag exists. Alignment is an explicit helper
 step, not part of `pipread generate` or its cache identity.

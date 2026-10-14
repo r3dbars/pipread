@@ -201,3 +201,5 @@ body:after{content:"";position:absolute;inset:0;z-index:30;pointer-events:none;b
 .install-github:hover{background:#eee8dc}
 .qa-section{padding-bottom:24px}
 @media(max-width:760px){.install-actions{justify-content:flex-start;gap:10px}.install-github{padding:10px 15px}}
+
+.follow-status{font-size:12px;line-height:1.5;color:#787363;margin:0 0 16px}.follow-status:empty{display:none}
