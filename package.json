@@ -10,7 +10,7 @@
     "preview": "vite preview --host 127.0.0.1",
     "test": "playwright test",
     "benchmark": "node tests/benchmark.mjs",
-    "test:cli": "node --test tests/cli.test.mjs tests/batch.test.mjs tests/static-loading.test.mjs",
+    "test:cli": "node --test tests/cli.test.mjs tests/batch.test.mjs tests/static-loading.test.mjs tests/engine.test.mjs",
     "demo:audio": "node bin/pipread.mjs generate --config pipread.demo.json --write",
     "build:browser-local": "vite build --config vite.browser-local.config.js",
     "site:dev": "vite website/public --host 127.0.0.1",

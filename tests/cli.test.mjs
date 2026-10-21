@@ -42,3 +42,7 @@ test('static integration is the default and repeats without changes',async()=>{
  const args=['add','--html',html,'--selector','#story','--manifest','/pipread/manifest.json','--article','post.html'];
  assert.equal(run(...args).status,0);assert.equal(await readFile(html,'utf8'),original);assert.equal(run(...args,'--write').status,0);assert.match(await readFile(html,'utf8'),/<pipread-audio manifest="\/pipread\/manifest.json" article="post.html" selector="#story">/);assert.match(run(...args,'--write').stdout,/Already integrated/);
 });
+test('generate help lists engine and voice flags',()=>{
+ assert.match(run('help').stdout,/--engine kokoro\|phonon/);
+ assert.match(run('help').stdout,/--voice NAME/);
+});

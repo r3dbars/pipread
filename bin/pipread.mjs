@@ -3,10 +3,12 @@ import { readFile, writeFile, mkdir, lstat, realpath } from "node:fs/promises";
 import { resolve, dirname, relative, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
+import { parseGenerateArgs } from "../lib/engine.mjs";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const help = `Pipread — prepare article audio locally, publish static playback
 
 node bin/pipread.mjs generate --config ./pipread.json [--write]
+  [--engine kokoro|phonon] [--voice NAME]
 node bin/pipread.mjs add --html ./blog/post.html --selector '#story'
   --manifest /pipread/manifest.json --article post.html [--write]
   [--script-url /pipread/pipread-player.js]
@@ -26,17 +28,13 @@ const args = process.argv.slice(2),
   command = args.shift();
 if (command === "generate") {
   try {
-    const index = args.indexOf("--config");
-    if (
-      index < 0 ||
-      !args[index + 1] ||
-      args[index + 1].startsWith("--") ||
-      args.some((x, i) => i !== index && i !== index + 1 && x !== "--write") ||
-      args.filter((x) => x === "--write").length > 1
-    )
-      throw Error("Usage: generate --config ./pipread.json [--write]");
+    const options = parseGenerateArgs(args);
     const { generateBatch } = await import("../lib/batch.mjs");
-    await generateBatch(args[index + 1], { write: args.includes("--write") });
+    await generateBatch(options.config, {
+      write: options.write,
+      engine: options.engine,
+      voice: options.voice,
+    });
   } catch (e) {
     console.error(`Narration stopped: ${e.message}`);
     process.exitCode = 1;
@@ -145,6 +143,7 @@ if (command === "generate") {
         "playwright.config.js",
         "tests/cli.test.mjs",
         "tests/batch.test.mjs",
+        "tests/engine.test.mjs",
         "tests/static-player.spec.js",
         "tests/static-words.spec.js",
         "tests/static-loading.test.mjs",

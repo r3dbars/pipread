@@ -67,6 +67,37 @@ Run exactly the same command after editing or adding posts. Unchanged narration 
 
 HTML extraction requires exactly one selector match. It excludes navigation, code, controls, hidden/ARIA-hidden/data-no-read elements and inline hidden styles. It does not execute scripts, fetch stylesheets, or calculate CSS class visibility. Use rendered static HTML and explicit `data-no-read` attributes; inspect the generated timing JSON transcript before publishing. `.txt` inputs are also supported, with blank lines separating paragraphs. Framework/Markdown source should be rendered to HTML first.
 
+## Alternative engine: Phonon
+
+Kokoro remains the default. [Phonon 31m English](https://huggingface.co/gradium/phonon-31m-en) is an optional local engine (Apache 2.0). Pipread calls the `ptts` CLI; it does not bundle Phonon weights or the runtime. Only `phonon-31m-en` is used. The 40m Phonon models are CC BY-NC and are not offered.
+
+Install `ptts` first, then generate as usual. A `ptts` binary on `PATH` (Homebrew or a GitHub release) is preferred; otherwise Pipread runs `uvx ptts`.
+
+```sh
+# Binary: https://github.com/gradium-ai/xn-ptts/releases
+# or: brew install gradium-ai/tap/ptts
+# or: pip install uv   # then Pipread can run `uvx ptts`
+
+node /path/to/pipread/bin/pipread.mjs generate --config ./pipread.json --engine phonon
+node /path/to/pipread/bin/pipread.mjs generate --config ./pipread.json --engine phonon --write
+```
+
+`--engine` wins over `pipread.json`. `--voice` selects a [Phonon catalog](https://huggingface.co/gradium/phonon-voices) voice (default `Easton`). Kokoro still defaults to `af_heart`.
+
+```json
+{
+  "inputDir": "rendered-posts",
+  "outputDir": "public/pipread",
+  "selector": "article",
+  "engine": "phonon",
+  "voice": "Easton"
+}
+```
+
+The first Phonon run downloads the pinned 31m q8 checkpoint and the chosen voice through `ptts`. Later runs reuse Pipread's existing manifest cache: the cache key includes engine, voice, and model, so switching engines never reuses the other engine's audio. Word timings still come from the optional alignment helper; Phonon does not emit word intervals.
+
+See [LICENSING.md](docs/LICENSING.md) for the 31m-only license boundary.
+
 ## Put the player beside an article
 
 Publish the entire generated `public/pipread` directory at `/pipread/` on your static host. The manifest maps each path relative to `inputDir` to its audio and timings. For `rendered-posts/post.html`:
