@@ -38,3 +38,9 @@ The source release excludes the generated runtime, dependency tarballs, model we
 ## Source-built replacement experiment
 
 An opt-in [pinned-source replacement](../experimental/phonemizer/README.md) now builds eSpeak NG 1.52.0 with a new GPL-marked adapter. Two English-only builds matched byte-for-byte on the tested Mac and a real Node Kokoro inference test passed. It is not the default dependency; browser validation and full source/notice delivery remain unfinished. This does not clear public synthesis-runtime hosting. The default static generator keeps inference dependencies on the developer’s machine and publishes only narration, timing/manifest data, and original player source.
+
+## Phonon 31m alternative engine
+
+The optional `--engine phonon` path uses [phonon-31m-en](https://huggingface.co/gradium/phonon-31m-en) only. That 31m English checkpoint is Apache 2.0. The `ptts` runtime is MIT OR Apache-2.0. This path has no eSpeak/GPL dependency: Pipread invokes a local `ptts` binary or `uvx ptts` and publishes generated WAV/timing/manifest files, not the synthesizer.
+
+Only the 31m model is allowed. The Phonon 40m models are CC BY-NC 4.0; Pipread must not use, download, or offer them. There is no `--model` flag. Voices come from the Apache-2.0 `gradium/phonon-voices` catalog (default Easton). This note is not legal clearance for every recording or voice.

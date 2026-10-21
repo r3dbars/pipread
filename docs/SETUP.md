@@ -2,7 +2,7 @@
 
 Use the README's `generate` configuration and standalone `<pipread-audio>` example. Render Markdown/framework posts into static HTML before extraction. Use an explicit selector and review the timing JSON transcript.
 
-`init --dir …` makes an empty-directory source scaffold; install dependencies inside it. `generate --config …` defaults to dry-run. `--write` downloads pinned model assets only when new or changed narration needs generation. `add` defaults to static playback and requires `--manifest` and `--article`; `--browser-local` is an explicit opt-in to the held browser synthesis experiment.
+`init --dir …` makes an empty-directory source scaffold; install dependencies inside it. `generate --config …` defaults to dry-run. `--write` downloads pinned model assets only when new or changed narration needs generation. `--engine phonon|kokoro` and `--voice` select the optional Phonon 31m engine (requires `ptts` or `uvx ptts`); Kokoro remains the default. `add` defaults to static playback and requires `--manifest` and `--article`; `--browser-local` is an explicit opt-in to the held browser synthesis experiment.
 
 Publish the generated output folder, not node_modules, the model cache, or a browser synthesis bundle. Preserve the generated player's license file. No API key is needed. A CI runner needs the same local dependencies and persistent output/model caches; the CLI does not grant deployment permissions or install a workflow in your blog. Pipread’s own repository includes test/build CI, which does not generate narration or deploy sites.
 

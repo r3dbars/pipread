@@ -10,6 +10,7 @@ Original Pipread code is MIT. The complete built bundle is not solely MIT.
 | [ONNX Runtime Web](https://github.com/microsoft/onnxruntime) | 1.22.0-dev.20250409-89f8206ba4 | MIT + upstream third-party notices |
 | [phonemizer.js](https://github.com/xenova/phonemizer.js) wrapper | 1.2.1 | Apache-2.0 |
 | [eSpeak NG](https://github.com/espeak-ng/espeak-ng#license-information), embedded by phonemizer.js | upstream bundled implementation | GPL-3.0-or-later |
+| [Phonon 31m](https://huggingface.co/gradium/phonon-31m-en) / [ptts](https://github.com/gradium-ai/xn-ptts) (optional local CLI) | phonon-31m-en, ptts 0.4.x | Apache-2.0 (weights); MIT OR Apache-2.0 (runtime) |
 
 The bundle also includes `@huggingface/jinja@0.5.10` (MIT). eSpeak attribution includes Jonathan Duddington and Reece H. Dunn; the complete attribution set for the exact embedded build still needs confirmation.
 
